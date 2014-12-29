@@ -18,6 +18,8 @@ int main() {
     unsigned long *field_length, *data_length; 
     char **result_data;
 
+    int num_rows = 0;
+
     strncpy(field_data[0], "adrek", STRING_SIZE);
     strncpy(field_data[1], "2", STRING_SIZE);
 
@@ -32,7 +34,7 @@ int main() {
         fprintf(stderr, "No Connection could be made to the database");
         exit(EXIT_FAILURE);
     } else {
-        query =  "SELECT `username`, `password`, `email`  FROM Users WHERE user_id > 1";
+        query =  "SELECT `username`, `password`, `email`, `user_id`  FROM Users WHERE username = ? OR  user_id > ? ";
         if ((stmt = mysql_stmt_init(mysql)) == 0) {
             return -1;
         }
@@ -46,9 +48,15 @@ int main() {
         
         // Print results, 1 row at a time
         while (mysql_stmt_fetch(stmt) == 0) {
-           for (int i=0; i<mysql_stmt_field_count(stmt); i++) {
+            for (int i=0; i<mysql_stmt_field_count(stmt); i++) {
                 printf("%s\n", result_data[i]); 
-           }
+            }
+            num_rows++;
+        }
+
+        // Work around until i can read the mysql_num_rows docs for prepared statements
+        if (num_rows == 0) {
+            printf("No results found\n");
         }
         
         // Free memory
