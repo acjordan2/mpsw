@@ -8,5 +8,5 @@ Requires the MySQL developement libriares
 To compile
 
 ~~~
-gcc stmt_prepare.c $(mysql_config --libs) -std=c99
+gcc *.c $(mysql_config --libs) -std=c99 -o demo 
 ~~~
