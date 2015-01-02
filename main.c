@@ -42,6 +42,7 @@ int main() {
         // Set up prepared statements, memory is dynmically allocated for the parmeter and results buffers
         // These will need to be freed using stmt_free
         if ((stmt_prepare(stmt, query, field_data, &field_length, &result_data, &data_length)) != 0) {
+            fprintf(stderr, "%s\n", mysql_stmt_error(stmt));
             return -1;
         }
         mysql_stmt_execute(stmt);

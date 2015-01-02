@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -13,7 +12,6 @@ int stmt_prepare(MYSQL_STMT *stmt, const char *query, char field_data[][STRING_S
                *results;
 
     if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
-        fprintf(stderr, "%s\n", mysql_stmt_error(stmt));
         return -1;
     }
 
@@ -64,15 +62,11 @@ int stmt_prepare(MYSQL_STMT *stmt, const char *query, char field_data[][STRING_S
         }
 
         if (mysql_stmt_bind_param(stmt, param)) {
-            fprintf(stderr, "mysql_stmt_bind_param() failed\n");
-            fprintf(stderr, "%s\n", mysql_stmt_error(stmt));
-            exit(EXIT_FAILURE);
+            return -1;
         }
 
         if (mysql_stmt_bind_result(stmt, results) != 0) {
-            fprintf(stderr, "mysql_stmt_bind_result() failed\n");
-            fprintf(stderr, "%s\n", mysql_stmt_error(stmt));
-            exit(EXIT_FAILURE);
+            return -1;
         }
 
         free(param);
