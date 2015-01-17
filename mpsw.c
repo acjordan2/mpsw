@@ -2,9 +2,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <mysql/mysql.h>
-#include "stmt_prepare.h"
+#include "mpsw.h"
 
-int stmt_prepare(MYSQL_STMT *stmt, const char *query, char field_data[][STRING_SIZE], unsigned long **field_length, char ***result_data, unsigned long **data_length) {
+int mspw_stmt_prepare(MYSQL_STMT *stmt, const char *query, char field_data[][STRING_SIZE], unsigned long **field_length, char ***result_data, unsigned long **data_length) {
     long unsigned int param_count,
                       field_count;
 
@@ -75,7 +75,7 @@ int stmt_prepare(MYSQL_STMT *stmt, const char *query, char field_data[][STRING_S
     }
 }
 
-void stmt_free(char ***result_data, int result_data_size,  unsigned long **field_length, unsigned long **data_length) {
+void mspw_stmt_free(char ***result_data, int result_data_size,  unsigned long **field_length, unsigned long **data_length) {
     for (int i=0; i<result_data_size; i++) {
         free((*result_data)[i]);
     }

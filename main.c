@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <mysql/mysql.h>
-#include "stmt_prepare.h"
+#include "mpsw.h"
 
 #define DB_HOST  ""
 #define DB_USER  ""
@@ -41,7 +41,7 @@ int main() {
 
         // Set up prepared statements, memory is dynmically allocated for the parmeter and results buffers
         // These will need to be freed using stmt_free
-        if ((stmt_prepare(stmt, query, field_data, &field_length, &result_data, &data_length)) != 0) {
+        if ((mpsw_stmt_prepare(stmt, query, field_data, &field_length, &result_data, &data_length)) != 0) {
             fprintf(stderr, "%s\n", mysql_stmt_error(stmt));
             return -1;
         }
@@ -62,7 +62,7 @@ int main() {
         
         // Free memory
         mysql_stmt_free_result(stmt);
-        stmt_free(&result_data, mysql_stmt_field_count(stmt), &field_length, &data_length);
+        mpsw_stmt_free(&result_data, mysql_stmt_field_count(stmt), &field_length, &data_length);
         mysql_stmt_close(stmt);
        
         mysql_close(mysql);
